@@ -84,6 +84,44 @@ Membahas model linear untuk estimasi regresi serta teknik regularisasi untuk men
   - *Spline Interpolation*: Pemanfaatan `SplineTransformer` (B-spline basis) untuk menangani kelengkungan fungsi secara piecewise tanpa osilasi ekstrem di ujung rentang data.
 - **Latihan Praktis Komparatif**: Perbandingan langsung performa OLS vs. Ridge vs. Lasso vs. ElasticNet pada data sintetis (`make_regression`), lengkap dengan visualisasi MSE, $R^2$, dan plot koefisien.
 
+### [Bab 6: Advanced Logistic Regression and Extensions](Bab6_Advanced_Logistic_Regression_and_Extensions.ipynb)
+Membahas teknik lanjutan regresi logistik untuk klasifikasi multikelas, penalti regularisasi, dan multilabel:
+- **Overview of Logistic Regression**: Prinsip dasar fungsi sigmoid, transformasi odds ke log-odds (logit), cross-entropy loss, dan estimasi parameter probabilitas untuk klasifikasi biner.
+- **Multiclass Classification Techniques**:
+  - *One-vs-Rest (OvR)*: Pelatihan satu pengklasifikasi biner per kelas independen.
+  - *Multinomial (Softmax Regression)*: Normalisasi probabilitas bersama seluruh kelas via fungsi softmax dan optimasi multinomial loss.
+- **Regularization in Logistic Regression**:
+  - Perbandingan penalti $L_1$ (sparsity/seleksi fitur otomatis), $L_2$ (penyusutan koefisien), dan ElasticNet.
+  - Efek parameter invers kekuatan regularisasi $C$ dan pemilihan solver (`lbfgs`, `saga`, `liblinear`).
+  - Visualisasi dampak intensitas regularisasi terhadap besaran koefisien model.
+- **Multilabel Classification Concepts**:
+  - Penanganan masalah di mana sampel dapat memiliki lebih dari satu label secara simultan.
+  - Implementasi pendekatan Binary Relevance dan pembungkus `MultiOutputClassifier`.
+  - Visualisasi matriks co-occurrence antar-label.
+- **Model Evaluation Metrics & Visualisasi**: Evaluasi log loss, confusion matrix, ROC-AUC multikelas, dan visualisasi pemetaan batas keputusan 2D berbasis meshgrid probabilitas.
+
+### [Bab 7: Support Vector Machines and Kernel Methods](Bab7_Support_Vector_Machines_and_Kernel_Methods.ipynb)
+Membahas algoritma Support Vector Machine (SVM) dan metode kernel untuk batas keputusan linear dan non-linear:
+- **Introduction to SVMs**: Konsep *maximum margin hyperplane*, identifikasi support vectors, pemodelan klasifikasi (`SVC`) dan regresi (`SVR` dengan parameter $\epsilon$-insensitive tube).
+- **Kernel Functions and Their Applications**:
+  - Konsep Kernel Trick: Memetakan ruang input berdimensi rendah ke ruang fitur berdimensi tinggi secara implisit tanpa komputasi eksplisit.
+  - Perbandingan performa kernel Linear, Polynomial (`poly`), dan Radial Basis Function (`rbf`) pada data terpisah non-linear (`make_moons`).
+- **Tuning SVM Parameters**: Eksplorasi peran parameter $C$ (kompromi antara ukuran margin dan toleransi kesalahan klasifikasi) serta parameter $\gamma$ (lebar jangkauan pengaruh tiap support vector pada kernel RBF).
+- **SVMs in High-Dimensional Spaces**: Karakteristik dan ketahanan SVM terhadap kutukan dimensi (*curse of dimensionality*) pada data dengan jumlah fitur sangat banyak ($p \gg n$), disertai visualisasi proyeksi komponen PCA.
+- **Evaluating SVM Models & Latihan Praktis**: Integrasi pipeline `StandardScaler` dan `SVC`, optimasi hyperparameter dengan `GridSearchCV`, serta visualisasi kontur batas keputusan dan margin pendukung.
+
+### [Bab 8: Tree-Based Algorithms and Ensemble Methods](Bab8_Tree_Based_Algorithms_and_Ensemble_Methods.ipynb)
+Membahas model berbasis pohon keputusan dan teknik ensembel (Bagging, Random Forest, dan Boosting):
+- **Introduction to Decision Trees**: Algoritma partisi rekursif (`DecisionTreeClassifier`), kriteria pemisahan homogenitas (Gini Impurity vs. Entropy), dan visualisasi struktur pohon via `plot_tree`.
+- **Mengendalikan Kompleksitas Tree**: Mitigasi risiko overfitting melalui pembatasan kedalaman (`max_depth`), sampel minimum per daun (`min_samples_leaf`), serta teknik pemangkasan Cost-Complexity Pruning (`ccp_alpha`).
+- **Random Forests and Bagging**:
+  - *Bagging* (Bootstrap Aggregating): Mereduksi variansi model dasar melalui agregasi hasil voting dari banyak model yang dilatih pada subset sampel bootstrap (`BaggingClassifier`).
+  - *Random Forest* (`RandomForestClassifier`): Ensembel pohon keputusan yang menggabungkan sampling bootstrap data dengan pengacakan subset fitur (*feature subsampling*) pada setiap pemisahan simpul.
+- **Gradient Boosting Machines**:
+  - Konsep pembelajaran boosting sekuensial via `GradientBoostingClassifier` di mana tiap pohon baru memprediksi pseudo-residual kesalahan dari pohon-pohon sebelumnya.
+  - Penyetelan parameter laju pembelajaran (*learning rate*) dan jumlah pohon (`n_estimators`).
+- **Hyperparameter Tuning & Perbandingan Ensemble**: Analisis komparatif kinerja Decision Tree vs. Random Forest vs. Gradient Boosting menggunakan cross-validation, serta inspeksi kontribusi prediktor melalui *feature importances*.
+
 ---
 
 ## Dataset yang Digunakan
@@ -91,10 +129,11 @@ Membahas model linear untuk estimasi regresi serta teknik regularisasi untuk men
 Implementasi kode pada notebook memanfaatkan dataset bawaan (*built-in*) scikit-learn, data sintetis, maupun data riil eksternal:
 
 - **California Housing Dataset**: Data sensus perumahan California untuk simulasi preprocessing lengkap dan pemodelan regresi (Bab 2).
-- **Iris Dataset**: Dataset morfologi bunga Iris (`load_iris`) untuk demonstrasi klasifikasi multi-kelas, reduksi dimensi, dan evaluasi metrik jarak KNN (Bab 3, 4).
+- **Iris Dataset**: Dataset morfologi bunga Iris (`load_iris`) untuk demonstrasi klasifikasi multi-kelas, reduksi dimensi, dan evaluasi metrik jarak KNN (Bab 3, 4, 6, 7, 8).
 - **Wine Dataset**: Data profil kimiawi tiga kultivar anggur (`load_wine`) untuk evaluasi pemisahan kelas PCA, LDA, dan tuning model KNN (Bab 3, 4).
 - **Optical Recognition of Handwritten Digits**: Dataset citra digit angka 8x8 piksel (`load_digits`) untuk kompresi dimensi, ekstraksi fitur, dan visualisasi t-SNE (Bab 3).
-- **Synthetic Datasets (`make_circles` & `make_regression`)**: Dataset lingkaran konsentris non-linear untuk visualisasi batas keputusan KNN, serta data regresi multivariat berderau untuk pengujian regularisasi Ridge, Lasso, dan ElasticNet (Bab 4, 5).
+- **Breast Cancer Wisconsin Dataset**: Dataset diagnosis tumor payudara (`load_breast_cancer`) untuk klasifikasi biner, tuning regularisasi $C$, dan evaluasi SVM pada data dimensi tinggi (Bab 6, 7).
+- **Synthetic Datasets (`make_circles`, `make_regression`, `make_moons`, `make_multilabel_classification`)**: Dataset buatan untuk visualisasi batas keputusan non-linear, evaluasi regularisasi linear, pengujian kernel SVM, dan demonstrasi klasifikasi multilabel (Bab 4, 5, 6, 7).
 
 ---
 
@@ -135,4 +174,4 @@ Proyek ini dibangun menggunakan pustaka ekosistem data science dan machine learn
    ```bash
    jupyter notebook
    ```
-   Buka berkas notebook bab yang ingin dipelajari (misalnya `Bab1_Common_Conventions_and_API_Elements.ipynb` hingga `Bab5_Linear_Models_and_Regularization.ipynb`). Seluruh sel kode di dalam notebook sudah tersimpan bersama luaran eksekusinya (*pre-computed outputs*).
+   Buka berkas notebook bab yang ingin dipelajari (misalnya `Bab1_Common_Conventions_and_API_Elements.ipynb` hingga `Bab8_Tree_Based_Algorithms_and_Ensemble_Methods.ipynb`). Seluruh sel kode di dalam notebook sudah tersimpan bersama luaran eksekusinya (*pre-computed outputs*).
